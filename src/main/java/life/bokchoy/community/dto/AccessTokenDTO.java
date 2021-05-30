@@ -1,4 +1,4 @@
-package life.bokchoy.community.controller.dto;
+package life.bokchoy.community.dto;
 
 public class AccessTokenDTO {
     private String client_id;

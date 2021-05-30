@@ -1,4 +1,4 @@
-package life.bokchoy.community.controller.dto;
+package life.bokchoy.community.dto;
 
 public class GithubUser {
     public String getName() {

@@ -1,9 +1,9 @@
-package life.bokchoy.community.controller.Provider;
+package life.bokchoy.community.Provider;
 
 
 import com.alibaba.fastjson.JSON;
-import life.bokchoy.community.controller.dto.AccessTokenDTO;
-import life.bokchoy.community.controller.dto.GithubUser;
+import life.bokchoy.community.dto.AccessTokenDTO;
+import life.bokchoy.community.dto.GithubUser;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
