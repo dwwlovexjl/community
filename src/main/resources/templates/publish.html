@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>bokchoy 社区</title>
+    <title>发布 bokchoy 社区</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-        <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
-        <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <link rel="stylesheet" href="/css/community.css"/>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
 
 </head>
@@ -32,7 +33,7 @@
                 <button type="submit" class="btn btn-default">搜索</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li th:if="${session.user!=null}">
+                <li th:if="${session.user==null}">
                     <a href="/publish">发布</a>
                 </li>
                 <li th:if="${session.user==null}">
@@ -51,5 +52,33 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-ms-12 col-xs-12">
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
+            <hr>
+            <form action="/publish" METHOD="post">
+                <div class="form-group">
+                    <label for="title">问题标题(简单扼要)</label>
+                    <input type="text" class="form-control" id="title" name="title"  th:value="${title}" placeholder="问题标题....">
+                </div>
+                <div class="form-group">
+                    <label for="discription">问题补充(必填，请参照右侧提示)</label>
+                    <textarea  name="description" id="discription" class="form-control" cols="30" rows="10" th:text="${description}" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="tag">添加标签</label>
+                    <input type="text" class="form-control" th:value="${tag}" id="tag" name="tag" placeholder="输入标签，以‘，’分割">
+                </div>
+                <div class="alert alert-danger" th:if="${error!=null}" th:text="${error}"></div>
+                <!-- Indicates a successful or positive action -->
+                <button type="submit" class="btn btn-success btn-publish">发布</button>
+            </form>
+        </div>
+        <div class="col-lg-3 col-md-12 col-ms-12 col-xs-12">
+            <h2>说明</h2>
+        </div>
+    </div>
+</div>
 </body>
 </html>
