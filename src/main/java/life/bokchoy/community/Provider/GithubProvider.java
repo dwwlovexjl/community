@@ -42,7 +42,7 @@ public class GithubProvider {
         try {
             Response response = client.newCall(request).execute();
             String string=response.body().string();
-//            System.out.println(string);
+            System.out.println(string);
             GithubUser githubUser = JSON.parseObject(string, GithubUser.class);//将string转换成GithubUser类对象
             return githubUser;
         } catch (IOException e) {

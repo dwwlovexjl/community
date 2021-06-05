@@ -36,7 +36,7 @@ public class AuthorizeController {
 
     @GetMapping("/callback")//处理callback页面资源即处理http://localhost:8887/callback，与登录界面的输入参数相同
     public String callback(@RequestParam(name = "code") String code,//获取返回的参数
-                           @RequestParam(name = "state") String state,
+                           @RequestParam(name = "state",defaultValue = "1") String state,
                            HttpServletResponse response){
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientId);
@@ -56,6 +56,7 @@ public class AuthorizeController {
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            user.setAvatarUrl(githubUser.getAvatarUrl());
             userMapper.insert(user);
             //登陆成功写cookie和session
             response.addCookie(new Cookie("token",token));//token 写入token
