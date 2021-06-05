@@ -28,6 +28,7 @@ public class IndexController {
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
                         @RequestParam(name = "size", defaultValue = "2") Integer size) {
         Cookie[] cookies = request.getCookies();
+
         if (cookies != null && cookies.length != 0) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
@@ -40,7 +41,6 @@ public class IndexController {
                 }
             }
         }
-
         PaginationDTO pagination = questionService.list(page,size);
         model.addAttribute("pagination", pagination);
         return "index";
