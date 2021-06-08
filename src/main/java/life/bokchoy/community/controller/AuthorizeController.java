@@ -5,6 +5,7 @@ import life.bokchoy.community.dto.AccessTokenDTO;
 import life.bokchoy.community.dto.GithubUser;
 import life.bokchoy.community.mapper.UserMapper;
 import life.bokchoy.community.model.User;
+import life.bokchoy.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
@@ -24,6 +26,9 @@ public class AuthorizeController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserService userService;
 
     @Value("${github.client.id}")//赋值注解将配置文件里面的对应名称后的值赋值给clientid
     private String clientId;
@@ -47,17 +52,15 @@ public class AuthorizeController {
         String accessToken = githubprovider.getAccessToken(accessTokenDTO);//POST请求
         GithubUser githubUser = githubprovider.getUser(accessToken);
         //上面与github服务器交互
-        System.out.println(githubUser.getName());
+//        System.out.println(githubUser.getName());
         if(githubUser!=null){
             User user = new User();
             String token = UUID.randomUUID().toString();
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(githubUser.getAvatarUrl());
-            userMapper.insert(user);
+            userService.createOrUpdate(user);
             //登陆成功写cookie和session
             response.addCookie(new Cookie("token",token));//token 写入token
 
@@ -70,5 +73,16 @@ public class AuthorizeController {
         }
 
 //        return "index";//还是跳转到index
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response){
+
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
     }
 }
