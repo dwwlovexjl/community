@@ -29,7 +29,7 @@
                     <a href="/publish">提问</a>
                 </li>
                 <li th:if="${session.user==null}">
-                    <a href="https://github.com/login/oauth/authorize?client_id=afeb26edf2f24b345fe6&redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a>
+                    <a href="https://gitee.com/oauth/authorize?client_id=76e770c006d714f6d6fc263bf882963f11943487663d73d9e0ff0895e6b2cadb&redirect_uri=http://localhost:8887/callback&scope=user_info&response_type=code">登录</a>
                 </li>
                 <li class="dropdown" th:if="${session.user!=null}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"

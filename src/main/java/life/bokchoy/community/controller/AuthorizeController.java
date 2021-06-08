@@ -36,13 +36,13 @@ public class AuthorizeController {
 
     @GetMapping("/callback")//处理callback页面资源即处理http://localhost:8887/callback，与登录界面的输入参数相同
     public String callback(@RequestParam(name = "code") String code,//获取返回的参数
-                           @RequestParam(name = "state",defaultValue = "1") String state,
+                           @RequestParam(name = "state",defaultValue = "authorization_code") String state,
                            HttpServletResponse response){
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientId);
         accessTokenDTO.setClient_secret(clientSecret);
         accessTokenDTO.setCode(code);
-        accessTokenDTO.setState(state);
+        accessTokenDTO.setGrant_type(state);
         accessTokenDTO.setRedirect_uri(redirectUri);
         String accessToken = githubprovider.getAccessToken(accessTokenDTO);//POST请求
         GithubUser githubUser = githubprovider.getUser(accessToken);

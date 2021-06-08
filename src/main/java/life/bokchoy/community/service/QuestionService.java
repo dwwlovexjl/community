@@ -65,7 +65,7 @@ public class QuestionService {
 
     public PaginationDTO listByUserId(Integer userId, Integer page, Integer size) {
 
-        Integer totalCount = questionMapper.count();
+        Integer totalCount = questionMapper.countByUserId(userId);
         Integer totalPage;
         if (totalCount%size==0) {
             totalPage=totalCount/size;
@@ -84,17 +84,27 @@ public class QuestionService {
         List<Question> questions = questionMapper.listByUserId(userId,offset,size);
         ArrayList<QuestionDTO> questionDTOList = new ArrayList<>();
         PaginationDTO paginationDTO = new PaginationDTO();
+        User user=userMapper.findById(userId);
         for (Question question : questions) {
-            User user=userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);//将question所有属性拷贝至questionDTO
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
-
         }
         paginationDTO.setQuestionDTOS(questionDTOList);
         paginationDTO.setPagination(totalPage,page);
 
         return paginationDTO;
+    }
+
+
+    public QuestionDTO getQuestionDTOByQuestionId(Integer id) {
+        QuestionDTO questionDTO=new QuestionDTO();
+        Question question=questionMapper.getById(id);
+        Integer userId=question.getCreator();
+        User user=userMapper.findById(userId);
+        BeanUtils.copyProperties(question,questionDTO);
+        questionDTO.setUser(user);
+        return questionDTO;
     }
 }
