@@ -1,7 +1,6 @@
 package life.bokchoy.community.controller;
 
 import life.bokchoy.community.dto.QuestionDTO;
-import life.bokchoy.community.mapper.QuestionMapper;
 import life.bokchoy.community.model.Question;
 import life.bokchoy.community.model.User;
 import life.bokchoy.community.service.QuestionService;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -23,8 +21,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class PublishController {
-//    @Autowired
-//    private QuestionMapper questionMapper;
 
     @Autowired
     private QuestionService questionService;

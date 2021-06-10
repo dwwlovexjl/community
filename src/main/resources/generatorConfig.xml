@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+<!--    加载依赖-->
+<!--    <classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />-->
+    <!--    建立数据库表 -->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+
+        <!-- 数据库连接 -->
+        <jdbcConnection driverClass="org.h2.Driver"
+                        connectionURL="jdbc:h2:~/community"
+                        userId="sa"
+                        password="123">
+        </jdbcConnection>
+
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- 数据表对应的model层  -->
+        <javaModelGenerator targetPackage="life.bokchoy.community.model" targetProject="src/main/java">
+            <!--            是否会自动生成不同的 Java 包。-->
+            <property name="enableSubPackages" value="true" />
+            <!--            是否修剪从数据库返回的字符字段中的空格-->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- sql mapper 映射配置文件 -->
+        <sqlMapGenerator targetPackage="mapper"  targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- mybatis3中的mapper接口 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="life.bokchoy.community.mapper"  targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!-- 数据表进行生成操作 schema:相当于库名; tableName:表名; domainObjectName:对应的DO -->
+        <table  tableName="user" domainObjectName="User" >
+        </table>
+
+        <table  tableName="question" domainObjectName="Question" >
+        </table>
+
+    </context>
+</generatorConfiguration>
