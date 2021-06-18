@@ -8,7 +8,8 @@
 <!--    <classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />-->
     <!--    建立数据库表 -->
     <context id="DB2Tables" targetRuntime="MyBatis3">
-
+<!--        插件-->
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
         <!-- 数据库连接 -->
         <jdbcConnection driverClass="org.h2.Driver"
                         connectionURL="jdbc:h2:~/community"
@@ -43,6 +44,8 @@
         </table>
 
         <table  tableName="question" domainObjectName="Question" >
+        </table>
+        <table  tableName="comment" domainObjectName="Comment" >
         </table>
 
     </context>
