@@ -73,7 +73,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO listByUserId(Integer userId, Integer page, Integer size) {
+    public PaginationDTO listByUserId(Long userId, Integer page, Integer size) {
 
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorEqualTo(userId);
@@ -115,13 +115,13 @@ public class QuestionService {
     }
 
 
-    public QuestionDTO getQuestionDTOByQuestionId(Integer id) {
+    public QuestionDTO getQuestionDTOByQuestionId(Long id) {
         QuestionDTO questionDTO=new QuestionDTO();
         if(questionDTO==null){
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
         Question question=questionMapper.selectByPrimaryKey(id);
-        Integer userId=question.getCreator();
+        Long userId=question.getCreator();
         User user=userMapper.selectByPrimaryKey(userId);
         BeanUtils.copyProperties(question,questionDTO);
         questionDTO.setUser(user);
@@ -133,6 +133,9 @@ public class QuestionService {
             //创建
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setCommentCount(0);
+            question.setLikeCount(0);
+            question.setViewCount(0);
 //            questionMapper.insert(question);
             //insertSelective可以处理默认值
             questionMapper.insertSelective(question);
@@ -152,7 +155,7 @@ public class QuestionService {
         }
     }
 
-    public void incView(Integer id) {
+    public void incView(Long id) {
 
         Question question = new Question();
         question.setId(id);

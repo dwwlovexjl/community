@@ -23,8 +23,8 @@ public class AuthorizeController {
     @Autowired//将该变量加入上下文中
     private GithubProvider githubprovider;
 
-    @Autowired
-    private UserMapper userMapper;
+//    @Autowired
+//    private UserMapper userMapper;
 
     @Autowired
     private UserService userService;

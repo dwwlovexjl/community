@@ -6,5 +6,7 @@ package life.bokchoy.community.exception;
  * @date 2021年06月10日 21:00
  */
 public interface ICustomizeErrorCode {
-    public String getMessage();
+    String getMessage();
+    Integer getCode();
+
 }

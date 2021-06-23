@@ -31,3 +31,27 @@ body{
 .error{
     margin: 100px;
 }
+
+.menu{
+    margin-top: 5px;
+    color: #999;
+}
+
+.menu .icon{
+    margin-right: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.menu .icon:hover{
+    color: #499ef3;
+}
+.comments{
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eeeeee;
+}
+.edit{
+    margin-top: 15px;
+    font-size: 1px;
+}
