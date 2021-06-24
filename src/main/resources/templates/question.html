@@ -19,6 +19,7 @@
 <div th:insert="~{navigation :: nav}"></div>
 <div class="container-fluid main profile">
     <div class="row">
+        <!--左边-->
         <div class="col-lg-9 col-md-12 col-ms-12 col-xs-12">
             <!--正文-->
             <div class="col-lg-12 col-md-12 col-ms-12 col-xs-12 " style="margin-bottom:10px">
@@ -28,16 +29,26 @@
                  | 发布时间：<span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd')}"></span>
                  | 阅读数：<span th:text="${question.viewCount}"></span>
                 </span>
-                <hr class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 " style="margin-top:0px">
+                <hr class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 " style="margin-top:2px">
+                <!--内容-->
                 <div class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 " th:text="${question.description}"></div>
+                <hr class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 " style="margin-bottom:0px">
+                <!--标签-->
                 <div class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 ">
+                    <span class="label label-info question-tag" th:each="tag:${question.tag.split(',')}">
+                        <span class="glyphicon glyphicon-tag"></span>
+                        <span class="label label-info" th:text="${tag}"></span>
+                    </span>
+
+                </div>
+                <hr class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 " style="margin:1px">
+                <div class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 question-edit">
                     <a th:href="@{'~/publish/'+${question.id}}" th:class="community-menu"
                        th:if="${session.user!=null && session.user.id==question.creator}">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                        编辑
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑</span>
                     </a>
                 </div>
-                <hr class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 " style="margin-top:1px">
+
             </div>
 
             <!--回复-->
@@ -47,7 +58,6 @@
                 </h5>
                 <hr class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 " style="margin-top: 1px">
                 <div class="col-lg-12 col-md-12 col-ms-12 col-xs-12 comments" th:each="comment : ${comments}">
-
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
@@ -115,10 +125,10 @@
             </div>
 
         </div>
+        <!--右边-->
         <div class=" col-lg-3 col-md-12 col-ms-12 col-xs-12 ">
             <div class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 ">
                 <h4>发起人</h4>
-                <hr>
                 <div class="media">
                     <div class="media-left">
                         <a href="#">
@@ -133,9 +143,23 @@
                     </div>
                 </div>
             </div>
-            <hr class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 ">
+            <!--微信头像-->
+            <hr class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 "style="margin: 1px">
+            <div class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 ">
+                <h4>推荐内容</h4>
+                <ul class="question-related">
+                    <img src="/img/wechat.png" class="img-thumbnail question-img" alt="">
+                </ul>
+            </div>
+            <!--相关内容-->
+            <hr class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 "style="margin: 1px">
             <div class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 ">
                 <h4>相关问题</h4>
+                <ul class="question-related">
+                    <li th:each="related : ${relatedQuestions}">
+                        <a th:href="@{'/question/'+${related.id}}" th:text="${related.title}"></a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

@@ -30,13 +30,35 @@ body {
 .question-title {
     margin-top: 25px;
 }
+.question-tag {
+    margin-top: 2px;
+    margin-bottom: 4px;
+    margin-right: 10px;
+}
+.question-related {
+    line-height: 20px;
+    font-size: 12px;
+    margin-left: 0px;
+    list-style: none;
+    padding-left: 0px;
+}
+.question-edit {
+    margin-top: 2px;
+    margin-bottom: 20px;
+
+}
+.question-img {
+    width: 100%;
+    height: 50%;
+
+}
 
 .community-menu {
     display: block;
     color: #999;
     font-size: 13px;
     margin-bottom: 2px;
-    margin-top: 15px;
+    margin-top: 1px;
 }
 
 .jumbotron {
