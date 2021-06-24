@@ -1,8 +1,8 @@
 package life.bokchoy.community.controller;
 
-import life.bokchoy.community.dto.CommentCreateDTO;
 import life.bokchoy.community.dto.CommentDTO;
 import life.bokchoy.community.dto.QuestionDTO;
+import life.bokchoy.community.enums.CommentTypeEnum;
 import life.bokchoy.community.service.CommentService;
 import life.bokchoy.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class QuestionController {
                            Model model){
         QuestionDTO questionDTO=questionService.getQuestionDTOByQuestionId(id);
 
-        List<CommentDTO> commentList = commentService.listByQuestionId(id);
+        List<CommentDTO> commentList = commentService.listByParentId(id, CommentTypeEnum.QUESTION);
         //增加阅读数
         questionService.incView(id);
         model.addAttribute("question" ,questionDTO);

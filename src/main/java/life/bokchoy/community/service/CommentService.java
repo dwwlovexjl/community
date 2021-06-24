@@ -1,14 +1,10 @@
 package life.bokchoy.community.service;
 
-import life.bokchoy.community.dto.CommentCreateDTO;
 import life.bokchoy.community.dto.CommentDTO;
 import life.bokchoy.community.enums.CommentTypeEnum;
 import life.bokchoy.community.exception.CustomizeErrorCode;
 import life.bokchoy.community.exception.CustomizeException;
-import life.bokchoy.community.mapper.CommentMapper;
-import life.bokchoy.community.mapper.QuestionExtMapper;
-import life.bokchoy.community.mapper.QuestionMapper;
-import life.bokchoy.community.mapper.UserMapper;
+import life.bokchoy.community.mapper.*;
 import life.bokchoy.community.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +34,9 @@ public class CommentService {
     private QuestionExtMapper questionExtMapper;
 
     @Autowired
+    private CommentExtMapper commentExtMapper;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Transactional//方法体加上事务
@@ -55,6 +54,10 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
+            //增加评论数
+            //Comment parentComment = new Comment();
+            dbComment.setCommentCount(1);
+            commentExtMapper.incCommentCount(dbComment);
         }else{
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -67,9 +70,10 @@ public class CommentService {
         }
     }
 
-    public List<CommentDTO> listByQuestionId(Long id) {
+    public List<CommentDTO> listByParentId(Long id, CommentTypeEnum type) {
         CommentExample commentExample = new CommentExample();
-        commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+        commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(type.getType());
+        commentExample.setOrderByClause("gmt_create desc");
         List<Comment> commentList = commentMapper.selectByExample(commentExample);
 
         if (commentList.size()==0) {
