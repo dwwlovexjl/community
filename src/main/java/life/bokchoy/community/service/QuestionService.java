@@ -67,7 +67,7 @@ public class QuestionService {
 //            }
 //        });
         ArrayList<QuestionDTO> questionDTOList = new ArrayList<>();
-        PaginationDTO paginationDTO = new PaginationDTO();
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         for (Question question : questions) {
             User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
@@ -76,7 +76,7 @@ public class QuestionService {
             questionDTOList.add(questionDTO);
 
         }
-        paginationDTO.setQuestionDTOS(questionDTOList);
+        paginationDTO.setData(questionDTOList);
         paginationDTO.setPagination(totalPage, page);
 
         return paginationDTO;
@@ -109,7 +109,7 @@ public class QuestionService {
                 example, new RowBounds(offset, size));
 //        List<Question> questions = questionMapper.listByUserId(userId,offset,size);
         ArrayList<QuestionDTO> questionDTOList = new ArrayList<>();
-        PaginationDTO paginationDTO = new PaginationDTO();
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<QuestionDTO>();
         User user = userMapper.selectByPrimaryKey(userId);
         for (Question question : questions) {
             QuestionDTO questionDTO = new QuestionDTO();
@@ -117,7 +117,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        paginationDTO.setQuestionDTOS(questionDTOList);
+        paginationDTO.setData(questionDTOList);
         paginationDTO.setPagination(totalPage, page);
 
         return paginationDTO;

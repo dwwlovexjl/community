@@ -46,6 +46,8 @@
         </table>
         <table  tableName="comment" domainObjectName="Comment" >
         </table>
+        <table  tableName="notification" domainObjectName="Notification" >
+        </table>
 
     </context>
 </generatorConfiguration>

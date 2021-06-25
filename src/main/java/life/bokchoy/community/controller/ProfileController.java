@@ -1,7 +1,9 @@
 package life.bokchoy.community.controller;
 
 import life.bokchoy.community.dto.PaginationDTO;
+import life.bokchoy.community.model.Notification;
 import life.bokchoy.community.model.User;
+import life.bokchoy.community.service.NotificationService;
 import life.bokchoy.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,8 @@ public class ProfileController {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private NotificationService notificationService;
     @GetMapping("/profile/{action}")
     public String profile(HttpServletRequest request,
                           @PathVariable(name = "action") String action,
@@ -37,15 +41,14 @@ public class ProfileController {
         if ("questions".equals(action)) {
             model.addAttribute("section","questions");
             model.addAttribute("sectionName","我的提问");
+            PaginationDTO paginationDTO = questionService.listByUserId(user.getId(), page, size);
+            model.addAttribute("pagination", paginationDTO);
         }else if ("replies".equals(action)){
             model.addAttribute("section","replies");
             model.addAttribute("sectionName","最新回复");
+            PaginationDTO paginationDTO =notificationService.listByUserId(user.getId(), page, size);
+            model.addAttribute("pagination", paginationDTO);
         }
-
-        PaginationDTO paginationDTO = questionService.listByUserId(user.getId(), page, size);
-
-        model.addAttribute("pagination", paginationDTO);
-
         return "profile";
     }
 }

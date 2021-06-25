@@ -2,6 +2,8 @@ package life.bokchoy.community.service;
 
 import life.bokchoy.community.dto.CommentDTO;
 import life.bokchoy.community.enums.CommentTypeEnum;
+import life.bokchoy.community.enums.NotificationStatusEnum;
+import life.bokchoy.community.enums.NotificationTypeEnum;
 import life.bokchoy.community.exception.CustomizeErrorCode;
 import life.bokchoy.community.exception.CustomizeException;
 import life.bokchoy.community.mapper.*;
@@ -38,6 +40,8 @@ public class CommentService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private NotificationMapper notificationMapper;
 
     @Transactional//方法体加上事务
     public void insert(Comment comment) {
@@ -55,9 +59,10 @@ public class CommentService {
             }
             commentMapper.insert(comment);
             //增加评论数
-            //Comment parentComment = new Comment();
             dbComment.setCommentCount(1);
             commentExtMapper.incCommentCount(dbComment);
+            //创建通知
+            createNotify(comment.getCommentator(), dbComment.getCommentator(), NotificationTypeEnum.REPLAY_COMMENT, comment.getParentId());
         }else{
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -67,7 +72,29 @@ public class CommentService {
             commentMapper.insert(comment);
             question.setCommentCount(1);
             questionExtMapper.incCommentCount(question);
+            //创建通知
+            createNotify(comment.getCommentator(), question.getCreator(), NotificationTypeEnum.REPLAY_QUESTION, comment.getParentId());
         }
+    }
+
+    private void createNotify(Long notifier, Long receiver, NotificationTypeEnum type, Long outerId) {
+        /*
+         * 插入通知数据
+         * @author bokchoy
+         * @date 2021/6/25 17:04
+         * @param notifier 回复的发起人
+         * @param receiver 要通知的人
+         * @param outerId 回复的目标id question id or comment id
+         * @param type 回复的类型，问题或者评论
+         */
+        Notification notification = new Notification();
+        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setNotifier(notifier);//发起者id
+        notification.setReceiver(receiver);//接收者id
+        notification.setOuterId(outerId);//所评论的问题id
+        notification.setType(type.getType());//回复的是评论，还是问题
+        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());//是否已读
+        notificationMapper.insert(notification);
     }
 
     public List<CommentDTO> listByParentId(Long id, CommentTypeEnum type) {
