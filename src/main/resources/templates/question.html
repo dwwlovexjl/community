@@ -8,11 +8,17 @@
     <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
     <link rel="stylesheet" href="/css/community.css"/>
+    <!--预览富文本文件-->
+    <link rel="stylesheet" href="/editormd/css/editormd.preview.css" />
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/moment.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
+    <!--makdown2html-->
+    <script src="/editormd/editormd.js"></script>
+    <script src="/editormd/lib/marked.min.js"></script>
+    <script src="/editormd/lib/prettify.min.js"></script>
 
 </head>
 <body>
@@ -31,7 +37,19 @@
                 </span>
                 <hr class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 " style="margin-top:2px">
                 <!--内容-->
-                <div class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 " th:text="${question.description}"></div>
+                <div class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 " id="question-markdown-view">
+                    <textarea style="display:none;"th:text="${question.description}"></textarea>
+                </div>
+                <script type="text/javascript">
+                    $(function() {
+                        var testView = editormd.markdownToHTML("question-markdown-view", {
+                            path   : "/editormd/lib/",
+                            pluginPath: "/editormd/plugins/",
+                            tex:true,
+                            SequenceDiagram: true,
+                        });
+                    });
+                </script>
                 <hr class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 " style="margin-bottom:0px">
                 <!--标签-->
                 <div class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 ">
@@ -148,7 +166,7 @@
             <div class=" col-lg-12 col-md-12 col-ms-12 col-xs-12 ">
                 <h4>推荐内容</h4>
                 <ul class="question-related">
-                    <img src="/img/wechat.png" class="img-thumbnail question-img" alt="">
+                    <img src="/images/img/wechat.png" class="img-thumbnail question-img" alt="">
                 </ul>
             </div>
             <!--相关内容-->
